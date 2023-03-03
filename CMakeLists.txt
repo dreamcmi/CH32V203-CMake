@@ -38,7 +38,7 @@ add_compile_options(-march=rv32imac -mabi=ilp32 -mcmodel=medany -msmall-data-lim
 add_compile_options(-fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -fno-common)
 
 # 编译等级
-add_compile_options(-O3)
+add_compile_options(-O2)
 
 # 编译信息等级
 add_compile_options(-Wall)
@@ -63,7 +63,9 @@ file(GLOB_RECURSE SOURCES
 
 # 链接参数
 set(LINKER_SCRIPT  ${CMAKE_SOURCE_DIR}/Ld/Link.ld)
-add_link_options(-nostartfiles 
+add_link_options(
+                -march=rv32imac -mabi=ilp32
+                -nostartfiles 
                 -Xlinker --gc-sections  
                 -Wl,--print-memory-usage
                 -Wl,-Map,${PROJECT_NAME}.map 
@@ -75,7 +77,7 @@ add_link_options(-T ${LINKER_SCRIPT})
 add_executable(${PROJECT_NAME}.elf ${SOURCES} ${LINKER_SCRIPT})
 
 # 链接静态库
-target_link_libraries(${PROJECT_NAME}.elf printfloat)
+# target_link_libraries(${PROJECT_NAME}.elf printfloat)
 
 # 输出hex和bin
 set(HEX_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.hex)
